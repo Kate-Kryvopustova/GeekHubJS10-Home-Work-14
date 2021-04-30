@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { ILoginForm } from '../app/interfaces/login';
 
 @Injectable()
@@ -9,7 +9,7 @@ import { ILoginForm } from '../app/interfaces/login';
 
 export class HttpService{
 
-  private postURL = 'http://localhost:3000/postuser';
+  private postURL = 'http://localhost:4200';
 
   constructor(private http: HttpClient){ }
 
@@ -18,8 +18,8 @@ export class HttpService{
     const data = window.btoa(`${user.email}: ${user.password}`);
     const decodedData = window.atob(data);
 
-    return this.http.post(this.postURL, user, {headers: {
-        Authorization: `${decodedData}`,
-      }});
+    const headers = new HttpHeaders().set('headers', decodedData);
+
+    return this.http.post(this.postURL, user, { headers });
   }
 }
